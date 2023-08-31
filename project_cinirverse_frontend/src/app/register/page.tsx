@@ -1,17 +1,138 @@
 "use client"
-import React from 'react'
+import React, { useState,useEffect } from 'react'
 import Navbar from '../Header_Navbar'
 import Footer from '../Footer'
 
 
 export default function page() {
+  //useState 
+  const [inputField,setInputField] = useState({
+    userName : "",
+    fullName : "",
+    email : "",
+    password : "",
+    confirmPassword : ""
+  })
+  const [errors, setErrors] = useState({});
+  const [submitting, setSubmitting] = useState(false);
+  const [isTouchUsername,setIsTouchUsername] = useState(false);
+  const [isTouchFullname,setIsTouchFullname,] = useState(false);
+  const [isTouchEmail,setIsTouchEmail,] = useState(false);
+  const [isTouchPassword,setIsTouchPassword,] = useState(false);
+  const [isTouchConfirmPassword,setIsTouchConfirmPassword,] = useState(false);
+  
+
+// เก็บค่าในInputFieldเมื่อมีการเปลี่ยนแปลงตลอด
+  const handleChange = (e:any) => {
+    setInputField({ ...inputField, [e.target.name]: e.target.value });
+  };
+
+
+  //validate from
+  useEffect(() => {
+    if (isTouchUsername === true) {
+      if (inputField.userName.length < 5) {
+        setErrors({ userName: 'Username must be at least 5 characters ' });
+      } else {
+        setErrors({});
+      }
+    }
+  }, [inputField.userName, isTouchUsername]);
+
+  useEffect(() => {
+    if (isTouchFullname === true) {
+      if (inputField.fullName.length < 8) {
+        setErrors({ fullName: 'Fullname must be at least 8 characters ' });
+      } else {
+        setErrors({});
+      }
+    }
+  }, [inputField.fullName, isTouchFullname]);
+
+  useEffect(() => {
+    if (isTouchEmail === true) {
+      if (inputField.email.length < 8 ) {
+        setErrors({ email: 'email must be at least 8 characters ' });
+      } else {
+        setErrors({});
+      }
+    }
+  }, [inputField.email, isTouchEmail]);
+
+  useEffect(() => {
+    if (isTouchPassword === true) {
+      const password = inputField.password;
+      let isValid = true;
+  
+      // ตรวจสอบว่ารหัสผ่านมีความยาวอย่างน้อย 8 ตัวอักษร
+      if (password.length < 8) {
+        isValid = false;
+      }
+  
+      // ตรวจสอบว่ารหัสผ่านมีตัวพิมพ์ใหญ่ (uppercase)
+      if (!/[A-Z]/.test(password)) {
+        isValid = false;
+      }
+  
+      // ตรวจสอบว่ารหัสผ่านมีตัวพิมพ์เล็ก (lowercase)
+      if (!/[a-z]/.test(password)) {
+        isValid = false;
+      }
+  
+      // ตรวจสอบว่ารหัสผ่านมีอักขระพิเศษ (special characters)
+      if (!/[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/.test(password)) {
+        isValid = false;
+      }
+  
+      if (isValid) {
+        setErrors({});
+      } else {
+        setErrors({ password: 'Password must be at least 8 characters  and contain uppercase,special characters.' });
+      }
+    }
+  }, [inputField.password, isTouchPassword]);
+  
+
+  useEffect(() => {
+    if (isTouchConfirmPassword === true) {
+      if (inputField.confirmPassword !== inputField.password ) {
+        setErrors({ confirmPassword: 'Confirm Password Not Match ' });
+      } else {
+        setErrors({});
+      }
+    }
+  }, [inputField.confirmPassword, isTouchConfirmPassword]);
+
+
+
+  //เมื่อกดsubmitจะเรียกใช้ฟังชั่นนี้ทันทีและsetSubmittingเป็นtrueไปเลย
+  const handleSubmit = (event:any) => {
+    event.preventDefault();
+    setSubmitting(true);
+  };
+
+
+  const finishSubmit = () => {
+    console.log(inputField);
+  };
+
+  
+  //ใช้useEffect เช็คว่าในerrorsมีerrorsไหมและ submittingเป็นtrue หรือยัง
+  //ถ้าเป็นแล้วให้ไปเรียก finishSubmit
+  useEffect(() => {
+    if (Object.keys(errors).length === 0 && submitting) {
+      finishSubmit();
+    }
+  }, [errors, submitting]);
+
+
 
 
   return (
     <div className="login bg-cover bg-repeat text-black ">
     <Navbar/>
   <div className="h-screen flex flex-col justify-center items-center">
-      <form className="">
+      <form className="" onSubmit={handleSubmit}  >
         <h1 className="text-white text-center font-bold text-8xl mb-1">Register</h1>
         <p className="text-xl font-normal text-center text-white mt-7 mb-7">Create your account .It's free and takes 30seconds!</p>
     
@@ -33,11 +154,19 @@ export default function page() {
           <input
             className="pl-2 outline-none border-none text-4xl"
             type="text"
-            name=""
-            id=""
+            name="userName"
+            id="userName"
             placeholder="Username"
-          />
+            value={inputField.userName}
+            onChange={handleChange}
+            onBlur={() => setIsTouchUsername(false)}
+            onFocus={() => setIsTouchUsername(true)}             />
         </div>
+        {isTouchUsername && errors.userName ? (
+          <p className="error text-white text-sm">
+            {errors.userName}
+          </p>) : null}
+          
 
         
         <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
@@ -51,10 +180,20 @@ export default function page() {
 				  </svg>
 				<input className="pl-2 outline-none border-none text-4xl" 
         type="text" 
-        name="" 
-        id="" 
-        placeholder="Full name" />
+        name="fullName" 
+        id="fullName" 
+        placeholder="Full name" 
+        value={inputField.fullName}
+        onChange={handleChange} 
+        onBlur={() => setIsTouchFullname(false)}
+        onFocus={() => setIsTouchFullname(true)}
+        />
          </div>
+        {isTouchFullname && errors.fullName ? (
+              <p className="error text-white text-sm">
+                {errors.fullName}
+              </p>
+            ): null}
 
         <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
 						<svg xmlns="http://www.w3.org/2000/svg" 
@@ -67,11 +206,20 @@ export default function page() {
 						d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
 						</svg>
 						<input className="pl-2 outline-none border-none text-4xl" 
-            type="text" 
-            name="" 
-            id="" 
-            placeholder="Email Address" />
+            type="email" 
+            name="email" 
+            id="email" 
+            placeholder="Email Address" 
+            value={inputField.email}
+            onChange={handleChange}
+            onBlur={() => setIsTouchEmail(false)}
+            onFocus={() => setIsTouchEmail(true)}
+            />
         </div>
+        {isTouchEmail && errors.email ? (
+          <p className="error text-white text-sm">
+            {errors.email}
+          </p>) : null}
 
         <div className="flex items-center border-2 py-2 px-3 rounded-2xl">
           <svg
@@ -84,12 +232,20 @@ export default function page() {
           </svg>
           <input
             className="pl-2 outline-none border-none text-4xl"
-            type="text"
-            name=""
-            id=""
+            type="password"
+            name="password"
+            id="password"
             placeholder="Password"
+            value={inputField.password}
+            onChange={handleChange}
+            onBlur={() => setIsTouchPassword(false)}
+            onFocus={() => setIsTouchPassword(true)}
           />
         </div>
+        {isTouchPassword && errors.password ? (
+          <p className="error text-white text-sm">
+            {errors.password}
+          </p>) : null}
 
 
         <div className="flex items-center border-2 py-2 px-3 rounded-2xl">
@@ -103,12 +259,20 @@ export default function page() {
           </svg>
           <input
             className="pl-2 outline-none border-none text-4xl"
-            type="text"
-            name=""
-            id=""
+            type="password"
+            name="confirmPassword"
+            id="confirmPassword"
             placeholder="Confirm Password"
+            value={inputField.confirmPassword}
+            onChange={handleChange}
+            onBlur={() => setIsTouchConfirmPassword (false)}
+            onFocus={() => setIsTouchConfirmPassword (true)}
           />
         </div>
+        {isTouchConfirmPassword && errors.confirmPassword ? (
+          <p className="error text-white text-sm">
+            {errors.confirmPassword}
+          </p>) : null}
         <button
           type="submit"
           className=" text-4xl block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2"
