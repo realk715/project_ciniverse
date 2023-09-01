@@ -132,7 +132,7 @@ export default function page() {
     <div className="login bg-cover bg-repeat text-black ">
     <Navbar/>
   <div className="h-screen flex flex-col justify-center items-center">
-      <form className="" onSubmit={handleSubmit}  >
+  <form className="" onSubmit={Object.keys(errors).length === 0 ? handleSubmit : undefined}>
         <h1 className="text-white text-center font-bold text-8xl mb-1">Register</h1>
         <p className="text-xl font-normal text-center text-white mt-7 mb-7">Create your account .It's free and takes 30seconds!</p>
     
@@ -163,7 +163,7 @@ export default function page() {
             onFocus={() => setIsTouchUsername(true)}             />
         </div>
         {isTouchUsername && errors.userName ? (
-          <p className="error text-white text-sm">
+          <p className="error text-white text-sm mb-3">
             {errors.userName}
           </p>) : null}
           
@@ -190,7 +190,7 @@ export default function page() {
         />
          </div>
         {isTouchFullname && errors.fullName ? (
-              <p className="error text-white text-sm">
+              <p className="error text-white text-sm mb-3">
                 {errors.fullName}
               </p>
             ): null}
@@ -217,11 +217,11 @@ export default function page() {
             />
         </div>
         {isTouchEmail && errors.email ? (
-          <p className="error text-white text-sm">
+          <p className="error text-white text-sm mb-3">
             {errors.email}
           </p>) : null}
 
-        <div className="flex items-center border-2 py-2 px-3 rounded-2xl">
+        <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-12 w-12 text-gray-400"
@@ -243,12 +243,12 @@ export default function page() {
           />
         </div>
         {isTouchPassword && errors.password ? (
-          <p className="error text-white text-sm">
+          <p className="error text-white text-sm mb-3">
             {errors.password}
           </p>) : null}
 
 
-        <div className="flex items-center border-2 py-2 px-3 rounded-2xl">
+        <div className="flex items-center border-2 py-2 px-3 rounded-2xl mt-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-12 w-12 text-gray-400"
@@ -270,7 +270,7 @@ export default function page() {
           />
         </div>
         {isTouchConfirmPassword && errors.confirmPassword ? (
-          <p className="error text-white text-sm">
+          <p className="error text-white text-sm mt-3">
             {errors.confirmPassword}
           </p>) : null}
         <button
