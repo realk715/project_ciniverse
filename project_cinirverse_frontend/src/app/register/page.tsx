@@ -1,10 +1,16 @@
 "use client"
-import React, { useState,useEffect } from 'react'
+import React, { useState,useEffect,FormEvent, FormEventHandler  } from 'react'
 import Navbar from '../Header_Navbar'
 import Footer from '../Footer'
+import axios from '../Confix_Axios'
 
 
 export default function page() {
+  //
+
+
+
+
   //useState 
   const [inputField,setInputField] = useState({
     userName : "",
@@ -40,12 +46,11 @@ export default function page() {
   }, [inputField.userName, isTouchUsername]);
 
   useEffect(() => {
-    if (isTouchFullname === true) {
       if (inputField.fullName.length < 8) {
         setErrors({ fullName: 'Fullname must be at least 8 characters ' });
       } else {
         setErrors({});
-      }
+      
     }
   }, [inputField.fullName, isTouchFullname]);
 
@@ -94,8 +99,8 @@ export default function page() {
   
 
   useEffect(() => {
-    if (isTouchConfirmPassword === true) {
-      if (inputField.confirmPassword !== inputField.password ) {
+    if (isTouchConfirmPassword === true ) {
+      if (inputField.confirmPassword !== inputField.password || inputField.confirmPassword.length === 0 ) {
         setErrors({ confirmPassword: 'Confirm Password Not Match ' });
       } else {
         setErrors({});
@@ -106,10 +111,30 @@ export default function page() {
 
 
   //เมื่อกดsubmitจะเรียกใช้ฟังชั่นนี้ทันทีและsetSubmittingเป็นtrueไปเลย
-  const handleSubmit = (event:any) => {
-    event.preventDefault();
-    setSubmitting(true);
-  };
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault(); // ป้องกันการรีโหลดหน้าหลังจาก submit
+  
+    const body = {
+      username: inputField.userName,
+      fullname: inputField.fullName,
+      email: inputField.email,
+      password: inputField.password,
+    };
+    console.log(body)
+    axios.post("/users/register", body)
+    .then((response: any) => {
+      // ดำเนินการเมื่อรับข้อมูลตอบกลับจากเซิร์ฟเวอร์
+      console.log("Registration success:", response.data);
+      console.log(body)
+      // ทำสิ่งที่คุณต้องการหลังจากการลงทะเบียนเสร็จสิ้น ยกเลิกสถานะการ submit หรือล้างฟอร์มเป็นต้น
+    })
+    .catch((error: any) => {
+      // ดำเนินการเมื่อเกิดข้อผิดพลาดในการส่งคำขอหรือรับข้อมูลตอบกลับจากเซิร์ฟเวอร์
+      console.error("Registration error:", error);
+      console.log(body)
+      // ทำสิ่งที่คุณต้องการเมื่อเกิดข้อผิดพลาด เช่น แสดงข้อความผิดพลาดหรือแสดงการแจ้งเตือน
+    });
+};
 
 
   const finishSubmit = () => {
@@ -132,7 +157,7 @@ export default function page() {
     <div className="login bg-cover bg-repeat text-black ">
     <Navbar/>
   <div className="h-screen flex flex-col justify-center items-center">
-  <form className="" onSubmit={Object.keys(errors).length === 0 ? handleSubmit : undefined}>
+  <form className=""  method="POST" >
         <h1 className="text-white text-center font-bold text-8xl mb-1">Register</h1>
         <p className="text-xl font-normal text-center text-white mt-7 mb-7">Create your account .It's free and takes 30seconds!</p>
     
@@ -174,7 +199,7 @@ export default function page() {
           className="h-12 w-12 text-gray-400" 
           viewBox="0 0 20 20"
 					fill="currentColor">
-					<path fill-rule="evenodd" 
+					<path fillRule="evenodd" 
           d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
 						clip-rule="evenodd" />
 				  </svg>
@@ -200,9 +225,9 @@ export default function page() {
             className="h-12 w-12 text-gray-400" 
             fill="none"
 						viewBox="0 0 24 24" stroke="currentColor">
-						<path stroke-linecap="round" 
-            stroke-linejoin="round" 
-            stroke-width="2"
+						<path strokeLinecap="round" 
+            strokeLinejoin="round" 
+            strokeWidth="2"
 						d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
 						</svg>
 						<input className="pl-2 outline-none border-none text-4xl" 
@@ -273,9 +298,11 @@ export default function page() {
           <p className="error text-white text-sm mt-3">
             {errors.confirmPassword}
           </p>) : null}
-        <button
-          type="submit"
-          className=" text-4xl block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2"
+          <button
+          type="button"
+          onClick={handleSubmit} // เรียกใช้ handleSubmit เมื่อคลิกที่ปุ่ม
+          className={`text-4xl block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 ${
+            Object.keys(errors).length === 0 ? '' : 'pointer-events-none opacity-50' }`}
         >
           Register now!
         </button>
