@@ -8,7 +8,7 @@ const page = () => {
     <div className="login bg-cover bg-repeat text-black ">
         <Navbar/>
       <div className="h-screen flex flex-col justify-center items-center">
-          <form className="">
+          <form className="" action="/users/login" method="POST">
             <h1 className="text-white font-bold text-8xl mb-1">Hello Again!</h1>
             <p className="text-4xl font-normal text-white mb-7">Welcome Back</p>
         

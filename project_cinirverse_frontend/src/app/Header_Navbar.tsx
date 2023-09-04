@@ -33,9 +33,9 @@ const Navbar = () => {
             </button>
             </div>
           </div>
-          <a href="#" className='hover:bg-red-600 text-white block py-2.5 px-4'>Home</a>
-          <a href="#" className='hover:bg-red-600 text-white block py-2.5 px-4'>Register</a>
-          <a href="#" className='hover:bg-red-600 text-white block py-2.5 px-4'>Login</a>
+          <a href="/" className='hover:bg-red-600 text-white block py-2.5 px-4'>Home</a>
+          <a href="/register" className='hover:bg-red-600 text-white block py-2.5 px-4'>Register</a>
+          <a href="login" className='hover:bg-red-600 text-white block py-2.5 px-4'>Login</a>
           <a href="#" className='hover:bg-red-600 text-white block py-2.5 px-4'>Movie Today</a>
           <a href="#" className='hover:bg-red-600 text-white block py-2.5 px-4'>Search Movie</a>
           <div className='  text-white block py-2.5 px-4 '>

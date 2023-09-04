@@ -1,12 +1,12 @@
 "use client"
-import React, { useState,useEffect,FormEvent, FormEventHandler  } from 'react'
+import React, { useState,useEffect,FormEvent, } from 'react'
 import Navbar from '../Header_Navbar'
 import Footer from '../Footer'
 import axios from '../Confix_Axios'
-
-
+import { useRouter } from 'next/navigation'
 export default function page() {
-  //
+  const router = useRouter()
+
 
 
 
@@ -26,7 +26,10 @@ export default function page() {
   const [isTouchEmail,setIsTouchEmail,] = useState(false);
   const [isTouchPassword,setIsTouchPassword,] = useState(false);
   const [isTouchConfirmPassword,setIsTouchConfirmPassword,] = useState(false);
-  
+  const [registrationSuccess,setRegistrationSuccess] = useState(false)
+  const [registrationError,setRegistrationError] = useState(false)
+
+
 
 // เก็บค่าในInputFieldเมื่อมีการเปลี่ยนแปลงตลอด
   const handleChange = (e:any) => {
@@ -68,27 +71,22 @@ export default function page() {
     if (isTouchPassword === true) {
       const password = inputField.password;
       let isValid = true;
-  
       // ตรวจสอบว่ารหัสผ่านมีความยาวอย่างน้อย 8 ตัวอักษร
       if (password.length < 8) {
         isValid = false;
       }
-  
       // ตรวจสอบว่ารหัสผ่านมีตัวพิมพ์ใหญ่ (uppercase)
       if (!/[A-Z]/.test(password)) {
         isValid = false;
       }
-  
       // ตรวจสอบว่ารหัสผ่านมีตัวพิมพ์เล็ก (lowercase)
       if (!/[a-z]/.test(password)) {
         isValid = false;
       }
-  
       // ตรวจสอบว่ารหัสผ่านมีอักขระพิเศษ (special characters)
       if (!/[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/.test(password)) {
         isValid = false;
       }
-  
       if (isValid) {
         setErrors({});
       } else {
@@ -113,7 +111,7 @@ export default function page() {
   //เมื่อกดsubmitจะเรียกใช้ฟังชั่นนี้ทันทีและsetSubmittingเป็นtrueไปเลย
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault(); // ป้องกันการรีโหลดหน้าหลังจาก submit
-  
+    setSubmitting(true)
     const body = {
       username: inputField.userName,
       fullname: inputField.fullName,
@@ -126,13 +124,15 @@ export default function page() {
       // ดำเนินการเมื่อรับข้อมูลตอบกลับจากเซิร์ฟเวอร์
       console.log("Registration success:", response.data);
       console.log(body)
-      // ทำสิ่งที่คุณต้องการหลังจากการลงทะเบียนเสร็จสิ้น ยกเลิกสถานะการ submit หรือล้างฟอร์มเป็นต้น
+      setRegistrationSuccess(true)
+      setTimeout(() => {
+        router.push('/login')
+      }, 1000);
     })
     .catch((error: any) => {
       // ดำเนินการเมื่อเกิดข้อผิดพลาดในการส่งคำขอหรือรับข้อมูลตอบกลับจากเซิร์ฟเวอร์
       console.error("Registration error:", error);
-      console.log(body)
-      // ทำสิ่งที่คุณต้องการเมื่อเกิดข้อผิดพลาด เช่น แสดงข้อความผิดพลาดหรือแสดงการแจ้งเตือน
+      setRegistrationError(true)
     });
 };
 
@@ -158,7 +158,14 @@ export default function page() {
     <Navbar/>
   <div className="h-screen flex flex-col justify-center items-center">
   <form className=""  method="POST" >
-        <h1 className="text-white text-center font-bold text-8xl mb-1">Register</h1>
+    {registrationSuccess ? (
+      <h1 className="text-white text-center font-bold text-3xl mb-1">
+      Register Success Fully welcome <p className='text-black text-center font-bold text-3xl mb-1'>{inputField.fullName}</p></h1> ) : (
+      <h1 className="text-white text-center font-bold text-8xl mb-1">
+      Register
+      </h1>
+      )}
+
         <p className="text-xl font-normal text-center text-white mt-7 mb-7">Create your account .It's free and takes 30seconds!</p>
     
         <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
@@ -306,10 +313,11 @@ export default function page() {
         >
           Register now!
         </button>
-      </form>          
-    </div>
-    
-  <div>
+      </form>      
+        
+    {registrationError ? (
+      <h1 className="text-white text-center font-bold text-3xl mb-1">Username already taken </h1>) : (null
+    )}
     <Footer />
   </div>
 </div>
