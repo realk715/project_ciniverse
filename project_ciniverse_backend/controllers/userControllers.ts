@@ -34,28 +34,34 @@ const loginUser = async (req: any, res: any) => {
 
     User.findOne({ username: username }).then((user) => {
         if (user && user.password) {
-            let cmp = bcrypt.compare(password, user.password).then((match) => {
+            bcrypt.compare(password, user.password).then((match) => {
                 if (match) {
-                    // ตรวจสอบสำเร็จก่อนสร้าง Session
-                    if (req.session) {
-                        req.session.UserId = user._id;
-                    }
+                    // รหัสผ่านถูกต้อง
+                    req.session.UserId = user._id;
                     res.status(200).send({
                         session: user._id,
                         message: "Login successful."
                     });
+                    console.log('Login successful')
                 } else {
+                    // รหัสผ่านไม่ถูกต้อง
                     res.status(500).send({
-                        session: user._id,
+                        session: null,
                         message: "Wrong username or password."
                     });
+                    console.log('Login failed')
                 }
             });
         } else {
-            res.redirect('/login');
+            // ไม่พบผู้ใช้
+            res.status(500).send({
+                session: null,
+                message: "User not found."
+            });
         }
     });
 }
+
 
 
 

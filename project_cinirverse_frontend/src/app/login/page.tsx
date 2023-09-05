@@ -1,14 +1,50 @@
 "use client"
-import React from 'react';
+import React, { useState } from 'react';
 import Footer from '../Footer';
 import Navbar from '../Header_Navbar';
+import { useRouter } from 'next/navigation'
+import axios from '../Confix_Axios'
 
-const page = () => {
+
+export default function page() {
+  const router = useRouter()
+  const [values, setValues] = useState({
+    username: '',
+    password: '',
+  });
+
+
+  const handleChange = (e:any) => {setValues({
+      ...values,[e.target.name]: e.target.value,
+    });
+  };
+
+  
+  const logIn = (e: React.FormEvent) => {
+    e.preventDefault(); // ป้องกันการรีโหลดหน้าเว็บ
+    const body = {
+      username : values.username,
+      password : values.password
+    }
+    console.log(body)
+    axios.post('/users/login',body).
+    then((response:any) => {
+      console.log("Login success:", response.data);
+      setTimeout(() => {
+        router.push('/')
+      }, 1000)
+    } ).catch( (error : any) => {
+      console.error("Login error:", error);
+    }
+      )
+    }
+
+
   return (
     <div className="login bg-cover bg-repeat text-black ">
         <Navbar/>
       <div className="h-screen flex flex-col justify-center items-center">
-          <form className="" action="/users/login" method="POST">
+          <form className="" method="POST" onSubmit={logIn} >
             <h1 className="text-white font-bold text-8xl mb-1">Hello Again!</h1>
             <p className="text-4xl font-normal text-white mb-7">Welcome Back</p>
         
@@ -30,9 +66,12 @@ const page = () => {
               <input
                 className="pl-2 outline-none border-none text-4xl"
                 type="text"
-                name=""
+                name="username"
+                value={values.username}
+                onChange={handleChange}
                 id=""
                 placeholder="Username"
+
               />
             </div>
             <div className="flex items-center border-2 py-2 px-3 rounded-2xl">
@@ -46,8 +85,10 @@ const page = () => {
               </svg>
               <input
                 className="pl-2 outline-none border-none text-4xl"
-                type="text"
-                name=""
+                type="password"
+                name="password"
+                onChange={handleChange}
+                value={values.password}
                 id=""
                 placeholder="Password"
               />
@@ -70,4 +111,3 @@ const page = () => {
   );
 };
 
-export default page;

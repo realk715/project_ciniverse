@@ -8,9 +8,6 @@ export default function page() {
   const router = useRouter()
 
 
-
-
-
   //useState 
   const [inputField,setInputField] = useState({
     userName : "",
@@ -21,11 +18,11 @@ export default function page() {
   })
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
-  const [isTouchUsername,setIsTouchUsername] = useState(false);
-  const [isTouchFullname,setIsTouchFullname,] = useState(false);
-  const [isTouchEmail,setIsTouchEmail,] = useState(false);
-  const [isTouchPassword,setIsTouchPassword,] = useState(false);
-  const [isTouchConfirmPassword,setIsTouchConfirmPassword,] = useState(false);
+  const [isTouchUsername,setIsTouchUsername] = useState(true);
+  const [isTouchFullname,setIsTouchFullname,] = useState(true);
+  const [isTouchEmail,setIsTouchEmail,] = useState(true);
+  const [isTouchPassword,setIsTouchPassword,] = useState(true);
+  const [isTouchConfirmPassword,setIsTouchConfirmPassword,] = useState(true);
   const [registrationSuccess,setRegistrationSuccess] = useState(false)
   const [registrationError,setRegistrationError] = useState(false)
 
@@ -37,75 +34,59 @@ export default function page() {
   };
 
 
-  //validate from
   useEffect(() => {
-    if (isTouchUsername === true) {
-      if (inputField.userName.length < 5) {
-        setErrors({ userName: 'Username must be at least 5 characters ' });
-      } else {
-        setErrors({});
-      }
+    // สร้างตัวแปรเก็บข้อผิดพลาด
+    const errors = {};
+  
+    // ตรวจสอบความถูกต้องของชื่อผู้ใช้
+    if (isTouchUsername === true && inputField.userName.length < 5) {
+      errors.userName = 'Username must be at least 5 characters';
     }
-  }, [inputField.userName, isTouchUsername]);
-
-  useEffect(() => {
-      if (inputField.fullName.length < 8) {
-        setErrors({ fullName: 'Fullname must be at least 8 characters ' });
-      } else {
-        setErrors({});
-      
+  
+    // ตรวจสอบความถูกต้องของชื่อเต็ม
+    if (inputField.fullName.length < 8) {
+      errors.fullName = 'Fullname must be at least 8 characters';
     }
-  }, [inputField.fullName, isTouchFullname]);
-
-  useEffect(() => {
-    if (isTouchEmail === true) {
-      if (inputField.email.length < 8 ) {
-        setErrors({ email: 'email must be at least 8 characters ' });
-      } else {
-        setErrors({});
-      }
+  
+    // ตรวจสอบความถูกต้องของอีเมล
+    if (isTouchEmail === true && inputField.email.length < 8) {
+      errors.email = 'Email must be at least 8 characters';
     }
-  }, [inputField.email, isTouchEmail]);
-
-  useEffect(() => {
+  
+    // ตรวจสอบความถูกต้องของรหัสผ่าน
     if (isTouchPassword === true) {
       const password = inputField.password;
       let isValid = true;
-      // ตรวจสอบว่ารหัสผ่านมีความยาวอย่างน้อย 8 ตัวอักษร
+      // ตรวจสอบความยาวของรหัสผ่าน
       if (password.length < 8) {
         isValid = false;
       }
-      // ตรวจสอบว่ารหัสผ่านมีตัวพิมพ์ใหญ่ (uppercase)
+      // ตรวจสอบตัวพิมพ์ใหญ่
       if (!/[A-Z]/.test(password)) {
         isValid = false;
       }
-      // ตรวจสอบว่ารหัสผ่านมีตัวพิมพ์เล็ก (lowercase)
+      // ตรวจสอบตัวพิมพ์เล็ก
       if (!/[a-z]/.test(password)) {
         isValid = false;
       }
-      // ตรวจสอบว่ารหัสผ่านมีอักขระพิเศษ (special characters)
+      // ตรวจสอบอักขระพิเศษ
       if (!/[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/.test(password)) {
         isValid = false;
       }
-      if (isValid) {
-        setErrors({});
-      } else {
-        setErrors({ password: 'Password must be at least 8 characters  and contain uppercase,special characters.' });
+      if (!isValid) {
+        errors.password = 'Password must be at least 8 characters and contain uppercase, special characters.';
       }
     }
-  }, [inputField.password, isTouchPassword]);
   
-
-  useEffect(() => {
-    if (isTouchConfirmPassword === true ) {
-      if (inputField.confirmPassword !== inputField.password || inputField.confirmPassword.length === 0 ) {
-        setErrors({ confirmPassword: 'Confirm Password Not Match ' });
-      } else {
-        setErrors({});
-      }
+    // ตรวจสอบความถูกต้องของการยืนยันรหัสผ่าน
+    if (isTouchConfirmPassword === true && (inputField.confirmPassword !== inputField.password || inputField.confirmPassword.length === 0)) {
+      errors.confirmPassword = 'Confirm Password Not Match';
     }
-  }, [inputField.confirmPassword, isTouchConfirmPassword]);
-
+  
+    // อัปเดตข้อผิดพลาด
+    setErrors(errors);
+  }, [inputField]);
+  
 
 
   //เมื่อกดsubmitจะเรียกใช้ฟังชั่นนี้ทันทีและsetSubmittingเป็นtrueไปเลย
@@ -121,9 +102,8 @@ export default function page() {
     console.log(body)
     axios.post("/users/register", body)
     .then((response: any) => {
-      // ดำเนินการเมื่อรับข้อมูลตอบกลับจากเซิร์ฟเวอร์
+      // ทำงานเมื่อรับข้อมูลตอบกลับจากเซิร์ฟเวอร์
       console.log("Registration success:", response.data);
-      console.log(body)
       setRegistrationSuccess(true)
       setTimeout(() => {
         router.push('/login')
@@ -190,9 +170,7 @@ export default function page() {
             id="userName"
             placeholder="Username"
             value={inputField.userName}
-            onChange={handleChange}
-            onBlur={() => setIsTouchUsername(false)}
-            onFocus={() => setIsTouchUsername(true)}             />
+            onChange={handleChange}        />
         </div>
         {isTouchUsername && errors.userName ? (
           <p className="error text-white text-sm mb-3">
@@ -217,8 +195,6 @@ export default function page() {
         placeholder="Full name" 
         value={inputField.fullName}
         onChange={handleChange} 
-        onBlur={() => setIsTouchFullname(false)}
-        onFocus={() => setIsTouchFullname(true)}
         />
          </div>
         {isTouchFullname && errors.fullName ? (
@@ -244,8 +220,6 @@ export default function page() {
             placeholder="Email Address" 
             value={inputField.email}
             onChange={handleChange}
-            onBlur={() => setIsTouchEmail(false)}
-            onFocus={() => setIsTouchEmail(true)}
             />
         </div>
         {isTouchEmail && errors.email ? (
@@ -270,8 +244,6 @@ export default function page() {
             placeholder="Password"
             value={inputField.password}
             onChange={handleChange}
-            onBlur={() => setIsTouchPassword(false)}
-            onFocus={() => setIsTouchPassword(true)}
           />
         </div>
         {isTouchPassword && errors.password ? (
@@ -297,8 +269,6 @@ export default function page() {
             placeholder="Confirm Password"
             value={inputField.confirmPassword}
             onChange={handleChange}
-            onBlur={() => setIsTouchConfirmPassword (false)}
-            onFocus={() => setIsTouchConfirmPassword (true)}
           />
         </div>
         {isTouchConfirmPassword && errors.confirmPassword ? (
