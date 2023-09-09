@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import Footer from '../Footer';
 import Navbar from '../Header_Navbar';
 import { useRouter } from 'next/navigation'
@@ -7,12 +7,14 @@ import axios from '../Confix_Axios'
 
 
 export default function page() {
+  
   const router = useRouter()
   const [values, setValues] = useState({
     username: '',
     password: '',
   });
-
+  const [loginError,setLoginError] = useState(false)
+  const [loginStatus, setLoginStatus] = useState(false);
 
   const handleChange = (e:any) => {setValues({
       ...values,[e.target.name]: e.target.value,
@@ -29,15 +31,22 @@ export default function page() {
     console.log(body)
     axios.post('/users/login',body).
     then((response:any) => {
-      console.log("Login success:", response.data);
+      if(response.data.message){
+      console.log("Login success:", response.data.loggedIn);
+      setLoginStatus(response.data.loggedIn);
       setTimeout(() => {
         router.push('/')
       }, 1000)
-    } ).catch( (error : any) => {
-      console.error("Login error:", error);
+    }}).
+    catch( (error : any) => {
+      console.log("Login failed:", error.response.data.loggedIn);
+      setLoginError(true)
+      setLoginStatus(error.response.data.loggedIn);
     }
       )
     }
+
+
 
 
   return (
@@ -93,7 +102,11 @@ export default function page() {
                 placeholder="Password"
               />
             </div>
-            <button
+            
+          {loginError? (<p className='text-2xl underline decoration-white text-white '>Wrong Username or Password</p>):
+          null}            
+          
+          <button
               type="submit"
               className=" text-4xl block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2"
             >
@@ -101,7 +114,7 @@ export default function page() {
             </button>
           </form>          
           <p className='text-white '>Guy you still don't have any account ? </p> 
-          <a href="/register" className='text-xl text-white border-b border-red-500 transition-transform transform hover:scale-150 '> Register here</a>
+          <a href="/register" className='text-xl text-white border-b border-red-500 transition-transform  hover:scale-150 '> Register here</a>
         </div>
         
       <div>
