@@ -17,7 +17,6 @@ export default function page() {
     confirmPassword : ""
   })
   const [errors, setErrors] = useState({});
-  const [submitting, setSubmitting] = useState(false);
   const [isTouchUsername,setIsTouchUsername] = useState(true);
   const [isTouchFullname,setIsTouchFullname,] = useState(true);
   const [isTouchEmail,setIsTouchEmail,] = useState(true);
@@ -89,10 +88,8 @@ export default function page() {
   
 
 
-  //เมื่อกดsubmitจะเรียกใช้ฟังชั่นนี้ทันทีและsetSubmittingเป็นtrueไปเลย
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault(); // ป้องกันการรีโหลดหน้าหลังจาก submit
-    setSubmitting(true)
     const body = {
       username: inputField.userName,
       fullname: inputField.fullName,
@@ -117,25 +114,11 @@ export default function page() {
 };
 
 
-  const finishSubmit = () => {
-    console.log(inputField);
-  };
-
-  
-  //ใช้useEffect เช็คว่าในerrorsมีerrorsไหมและ submittingเป็นtrue หรือยัง
-  //ถ้าเป็นแล้วให้ไปเรียก finishSubmit
-  useEffect(() => {
-    if (Object.keys(errors).length === 0 && submitting) {
-      finishSubmit();
-    }
-  }, [errors, submitting]);
-
 
 
 
   return (
     <div className="login bg-cover bg-repeat text-black ">
-    <Navbar/>
   <div className="h-screen flex flex-col justify-center items-center">
   <form className=""  method="POST" >
     {registrationSuccess ? (
@@ -288,7 +271,6 @@ export default function page() {
     {registrationError ? (
       <h1 className="text-white text-center font-bold text-3xl mb-1">Username already taken </h1>) : (null
     )}
-    <Footer />
   </div>
 </div>
   )

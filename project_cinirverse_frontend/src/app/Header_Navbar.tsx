@@ -1,12 +1,13 @@
-import React, {  useEffect, useState } from 'react';
+import {  useEffect, useState } from 'react';
 import axios from './Confix_Axios';
+import { useAuth } from './context/AuthContext';
 
 
 
 
 const Navbar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [loggedIn,setLoggedIn] = useState(false);
+  const {loggedIn,setLoggedIn} = useAuth();
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };

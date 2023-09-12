@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import User from '../model/user'; // อย่าลืมตรวจสอบชื่อและตำแหน่งของไฟล์ที่นำเข้า
 import bcrypt from 'bcrypt'
-
+import CryptoJS from 'crypto-js'
 
 //resgister
 
@@ -19,7 +19,6 @@ const registerUser = async (req: any, res: any) => {
             fullname:req.body.fullname,
             email:req.body.email,
             password:req.body.password,
-
         });
         console.log("Register Success!");
         return res.status(201).json(newUser);
@@ -43,10 +42,19 @@ const loginUser = async (req:any, res:any) => {
           req.session.UserId = user._id;
           req.session.loggedIn= true
           console.log("Login successful");
+          
+          const newToken:any = CryptoJS.AES.encrypt(JSON.stringify({ 
+            id:user._id,
+            permission: user.permission
+          }),"sunvoinwza007").toString()
+          console.log(newToken)
+          
+          const btoken:any = CryptoJS.AES.decrypt(newToken,"sunvoinwza007").toString(CryptoJS.enc.Utf8)
+          console.log(btoken)
           return res.status(200).json({
             session: user._id,
             message: "Login successful.",
-            loggedIn: true,
+            loggedIn: true,    
           });
         } else {
           // รหัสผ่านไม่ถูกต้อง

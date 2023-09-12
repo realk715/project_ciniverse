@@ -1,9 +1,9 @@
-"use client"
+'use client'
 import React from 'react'
 
 const Footer = () => {
   return (
-        <footer className='bg-black mt-20 border-t  border-black  fixed bottom-0 w-full '>
+        <footer className='bg-black mt-20 border-t  border-black  fixed bottom-0 w-full opacity-0  hover:opacity-100	 '>
             <div className=''>
                 <ul className='flex justify-between text-center text-base '>
                     <div className=''>

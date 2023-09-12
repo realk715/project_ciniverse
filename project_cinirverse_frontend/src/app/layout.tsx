@@ -1,8 +1,10 @@
+'use client'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { useState } from 'react';
-
+import { AuthProvider,useAuth  } from './context/AuthContext';
+import Navbar from './Header_Navbar';
+import Footer from './Footer';
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -17,7 +19,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <AuthProvider>
+          <Navbar/>
+          {children}
+          <Footer/>
+        </AuthProvider>
+      </body>
     </html>
   )
 }

@@ -1,7 +1,7 @@
-/// <reference path="globals.d.ts" />
-declare global {
-    var loggedIn: string | null;
-  }
+// /// <reference path="globals.d.ts" />
+// declare global {
+//     var loggedIn: string | null;
+//   }
   import dotenv from 'dotenv';
   dotenv.config();
   import express from 'express';
@@ -20,7 +20,7 @@ declare global {
       useUnifiedTopology: true,
   };
   
-  global.loggedIn = null;
+  // global.loggedIn = null;
   
   app.use(cors({
     origin: 'http://localhost:3000', // กำหนดโดเมนของ React ที่พอร์ต 3000

@@ -18,6 +18,10 @@ const UserSchema = new Schema ({
     password : {
         type : String, 
         require : [true , 'please provide password']
+    },
+    permission : {
+        type : String,
+        default : "user"
     }
     
 })

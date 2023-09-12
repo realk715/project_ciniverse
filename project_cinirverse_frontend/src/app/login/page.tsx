@@ -4,7 +4,7 @@ import Footer from '../Footer';
 import Navbar from '../Header_Navbar';
 import { useRouter } from 'next/navigation'
 import axios from '../Confix_Axios'
-
+import {useAuth} from '../context/AuthContext'
 
 export default function page() {
   
@@ -15,6 +15,7 @@ export default function page() {
   });
   const [loginError,setLoginError] = useState(false)
   const [loginStatus, setLoginStatus] = useState(false);
+  const { loggedIn, setLoggedIn } = useAuth();
 
   const handleChange = (e:any) => {setValues({
       ...values,[e.target.name]: e.target.value,
@@ -34,6 +35,7 @@ export default function page() {
       if(response.data.message){
       console.log("Login success:", response.data.loggedIn);
       setLoginStatus(response.data.loggedIn);
+      setLoggedIn(true)
       setTimeout(() => {
         router.push('/')
       }, 1000)
@@ -50,13 +52,12 @@ export default function page() {
 
 
   return (
-    <div className="login bg-cover bg-repeat text-black ">
-        <Navbar/>
+    <>
+   {!loggedIn? ( <div className="login bg-cover bg-repeat text-black ">
       <div className="h-screen flex flex-col justify-center items-center">
           <form className="" method="POST" onSubmit={logIn} >
             <h1 className="text-white font-bold text-8xl mb-1">Hello Again!</h1>
             <p className="text-4xl font-normal text-white mb-7">Welcome Back</p>
-        
             <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -118,9 +119,10 @@ export default function page() {
         </div>
         
       <div>
-        <Footer />
       </div>
-    </div>
+    </div>) : null}
+    </>
+
   );
 };
 
