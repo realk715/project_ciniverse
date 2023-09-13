@@ -12,13 +12,21 @@ export default  async function page({params}: Props) {
   const data = await response.json()
   console.log(data.title)
   return (
-    <div>
-      <h2 className=''>{data.title}</h2>
-      <Image alt='img'
+  <div
+  style={{ backgroundImage: `url(${img + data.backdrop_path})` }}
+  className="bg-no-repeat bg-cover bg-center w-full h-full"
+  >
+      <h2 className='text-center'>{data.title}</h2>
+      <div className='flex'>
+      <Image className='' alt='img'
       src={img+data.poster_path}
       width={400}
       height={400}
       />
+      </div>
+      <a className='ml-4'  href={`${data.homepage}`}> Website</a>
+      <p>original Language {data.original_language}</p>
+
     </div>
   )
 }

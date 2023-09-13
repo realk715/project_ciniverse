@@ -42,7 +42,7 @@ const Navbar = () => {
       </div>
 
 
-      <div className={`sidebar bg-black space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform ${sidebarOpen ? '' : '-translate-x-full'} transition duration-200 ease-in-out w-3/12 h-auto`} >
+      <div className={`sidebar bg-black space-y-6 py-7 px-2 fixed inset-y-0 left-0 transform ${sidebarOpen ? '' : '-translate-x-full'} transition duration-200 ease-in-out w-2/12 h-auto`} >
         <nav>
           <div className='block py-2.5 px-4'>
             <div className='flex justify-between	 '>
