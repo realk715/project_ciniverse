@@ -15,7 +15,7 @@ export default function movie({id,title,poster_path}: Props) {
 
 
   return (
-    <div className='bg-gray-600 border-solid border-2'>
+    <div className='bg-black border-solid border-2'>
         <h2 className='text-white text-center text-xl'> {title}</h2>
         <p></p>
         <Link href={`/movie/${id}`}>

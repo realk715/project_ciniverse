@@ -18,6 +18,7 @@ const Page = () => {
         setLoggedIn(true);
       } else {
         setLoggedIn(false);
+        router.push('/login')
       }
     });
 
