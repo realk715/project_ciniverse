@@ -28,7 +28,6 @@ export default function page() {
       username : values.username,
       password : values.password
     }
-    console.log(body)
     axios.post('/users/login',body).
     then((response:any) => {
       if(response.data.token){

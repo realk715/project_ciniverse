@@ -22,7 +22,7 @@
   // global.loggedIn = null;
   
   app.use(cors({
-    origin: 'http://localhost:3000', // กำหนดโดเมนของ React ที่พอร์ต 3000
+    origin: 'https://project-ciniverse-ogy64hh51-realk715.vercel.app', // กำหนดโดเมนของ React ที่พอร์ต 3000
     methods: ["get","post"],
     credentials: true, // อนุญาตการส่งคุกกี้ไปยังเซิร์ฟเวอร์ Node.js
   }));

@@ -58,7 +58,7 @@ const Navbar = () => {
           </div>
           <a href="/" className='hover:bg-red-600 text-white block py-2.5 px-4'>Home</a>
           <a href="/register" className='hover:bg-red-600 text-white block py-2.5 px-4'>Register</a>
-          {loggedIn?  null: <a href="login" className='hover:bg-red-600 text-white block py-2.5 px-4'>Login</a>}
+          {loggedIn?  null: <a href="/login" className='hover:bg-red-600 text-white block py-2.5 px-4'>Login</a>}
           <a href="/movieToday" className='hover:bg-red-600 text-white block py-2.5 px-4'>Movie Today</a>
           <a href="#" className='hover:bg-red-600 text-white block py-2.5 px-4 w-auto h-auto'>Search Movie</a>
           {loggedIn? <span className='hover:bg-red-600 text-white block py-2.5 px-4 w-auto h-auto'><button onClick={logout}>logout</button></span>:null}
