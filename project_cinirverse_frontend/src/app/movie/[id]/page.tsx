@@ -51,7 +51,7 @@ export default  async function page({params}: Props) {
       <li key={production_companies.id}>{production_companies.name}</li>
     ))}
     <br />
-  <p className='text-xl border-b responsive-data'>Budget : {data.budget}</p>
+  <p className='text-xl border-b responsive-data'>Budget : {data.budget} $</p>
   <p className='text-xl border-b responsive-data'>Popularity: {data.popularity}</p>
   <p className='text-xl border-b responsive-data'>Release Date: {data.release_date}</p>
   <p className='text-xl border-b responsive-data'>Revenue: {data.revenue} $</p>
