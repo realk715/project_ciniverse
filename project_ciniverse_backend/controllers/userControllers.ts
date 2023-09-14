@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import User from '../model/user'; // อย่าลืมตรวจสอบชื่อและตำแหน่งของไฟล์ที่นำเข้า
+import User from '../model/user'; 
 import bcrypt from 'bcrypt'
-import CryptoJS from 'crypto-js'
+import jwt, { decode } from 'jsonwebtoken';
 
 //resgister
 
@@ -28,7 +28,7 @@ const registerUser = async (req: any, res: any) => {
 
 //login
 
-const loginUser = async (req:any, res:any) => {
+const loginUser = async (req:any, res:any ,next:any) => {
     const { username, password } = req.body;
   
     try {
@@ -38,32 +38,34 @@ const loginUser = async (req:any, res:any) => {
         const match = await bcrypt.compare(password, user.password);
   
         if (match) {
-          // รหัสผ่านถูกต้อง
-          req.session.UserId = user._id;
-          req.session.loggedIn= true
-          console.log("Login successful");
-          
-          const newToken:any = CryptoJS.AES.encrypt(JSON.stringify({ 
-            id:user._id,
-            permission: user.permission
-          }),"sunvoinwza007").toString()
-          console.log(newToken)
-          
-          const btoken:any = CryptoJS.AES.decrypt(newToken,"sunvoinwza007").toString(CryptoJS.enc.Utf8)
-          console.log(btoken)
+          // รหัสผ่านถูกต้อง       
+          const newToken = jwt.sign(
+            {
+              id: user._id,
+              permission: user.permission
+            },
+            'sunvoinwza007', 
+            { expiresIn: '24h' } 
+          );
+          console.log(newToken);
+          res.cookie('authorization',newToken,{
+            httpOnly:true,
+            expires:new Date(Date.now() + 24 * 60 * 60 * 1000),
+            sameSite:'Strict'
+          })          
           return res.status(200).json({
-            session: user._id,
+            token: newToken,
             message: "Login successful.",
             loggedIn: true,    
           });
+            
+
+
         } else {
           // รหัสผ่านไม่ถูกต้อง
           console.log("Login failed");
-          req.session.loggedIn= false
-          req.session.UserId = null
-
           return res.status(500).json({
-            session: null,
+            token: null,
             message: "Wrong username or password.",
             loggedIn: false,
           });
@@ -71,21 +73,16 @@ const loginUser = async (req:any, res:any) => {
       } else {
         // ไม่พบผู้ใช้
         console.log("Login failed");
-        req.session.loggedIn= false
-        req.session.UserId = null
-
         return res.status(500).json({
-          session: null,
+          token: null,
           message: "Wrong username or password.",
           loggedIn: false,
         });
       }
     } catch (error) {
-      req.session.loggedIn= false
-      req.session.UserId = null
       console.error("Error during login:", error);
       return res.status(500).json({
-        session: null,
+        token: null,
         message: "An error occurred during login.",
         loggedIn: false,
       });
@@ -93,30 +90,42 @@ const loginUser = async (req:any, res:any) => {
   };
 
 
-  //check 
-const checkLogin = async (req:any,res:any) => {
-    if (req.session.loggedIn) {
-        return res.json({ loggedIn: true });
-      } else {
-        return res.json({ loggedIn: false });
-      }
-    };
+//check 
+const checkLogin = async (req: any, res: any) => {
+  const token = req.cookies.authorization; // ดึง Token จากคุกกี้
 
-//logout
-const logoutUser = async (req:any, res:any) => {
-  if (req.session.loggedIn) {
-    req.session.destroy(() => {
-      // ส่งการตอบสนองว่าล็อกเอาท์สำเร็จ
-      console.log('Logout successful')
-      return res.status(200).json({ message: "Logout successful" });
-    });
+  if (token) {
+      const decoded: any = jwt.verify(token, "sunvoinwza007");
+      // ถ้า Token ถูกต้องและยังไม่หมดอายุ
+      console.log('check login : true');
+      return res.status(200).json({
+        loggedIn: true,
+        id: decoded.id,
+        permission: decoded.permission
+      });
   } else {
-    // ไม่ได้ล็อกอินอยู่แล้ว
-    console.log('Not logged in')
-    return res.status(400).json({ message: "Not logged in" });
-
+    // ถ้าไม่มี Token ในคุกกี้
+    console.log('check login : false');
   }
 };
+
+
+//logout
+const logoutUser = async (req: any, res: any) => {
+  const token = req.cookies.authorization; // ดึง Token จากคุกกี้
+
+  if (token) {
+    // หากมี Token ในคุกกี้
+    console.log('Logout successful');
+    res.clearCookie('authorization'); // ลบคุกกี้ authorization
+    return res.status(200).json({ message: "Logout successful" });
+  } else {
+    // ถ้าไม่มี Token ในคุกกี้
+    console.log('Not logged in');
+    return res.status(400).json({ message: "Not logged in" });
+  }
+};
+
 
 
 

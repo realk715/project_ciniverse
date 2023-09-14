@@ -1,11 +1,11 @@
 import React from 'react'
 import Image from 'next/image';
 type Props = {
-  params:string;
+  params:any;
 }
 
 export default  async function page({params}: Props) {
-  const id = params;
+  const { id } = params;
   const img ="https://image.tmdb.org/t/p/original";
   const url = `https://api.themoviedb.org/3/movie/${id}?api_key=72eef7bc29be08e73392ec8cc0b64c52`;
   const response = await fetch(url,{next :{revalidate:60}}); //ครบ60วิ clear cache 
@@ -16,7 +16,7 @@ export default  async function page({params}: Props) {
   style={{ backgroundImage: `url(${img + data.backdrop_path})`,opacity:1 }}
   className="bg-no-repeat bg-cover bg-center w-full h-full  ">
 
-      <div className='flex justify-center h-screen w-screen h-fit	'>
+      <div className='flex justify-center  w-screen h-fit	'>
       <div className='w-6/12 h-12/12'>
       <Image style={{opacity:1}}  className=''  alt='img'
       src={img+data.poster_path}
@@ -24,7 +24,7 @@ export default  async function page({params}: Props) {
       width={2000}
       />
       </div>
-      <div className='p-4 list-none bg-black text-white w-6/12 	  '>
+      <div className='p-4 list-none bg-black text-white w-6/12  	  '>
       <h2 className=' text-4xl'>Movie Name :{data.title}</h2>
       <br />
   
@@ -51,7 +51,7 @@ export default  async function page({params}: Props) {
       <li key={production_companies.id}>{production_companies.name}</li>
     ))}
     <br />
-  <p className='text-xl border-b responsive-data'>Budget : {data.budget} $</p>
+  <p className='text-xl border-b responsive-data'>Budget : {data.budget}$</p>
   <p className='text-xl border-b responsive-data'>Popularity: {data.popularity}</p>
   <p className='text-xl border-b responsive-data'>Release Date: {data.release_date}</p>
   <p className='text-xl border-b responsive-data'>Revenue: {data.revenue} $</p>

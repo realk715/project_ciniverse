@@ -8,7 +8,6 @@
   import mongoose from 'mongoose';
   import cors from 'cors';
   import userRoutes from './routes/user'
-  import session from 'express-session'
   import bodyParser from 'body-parser';
   import cookieParser from 'cookie-parser'
 
@@ -32,18 +31,6 @@
   app.use(express.urlencoded({extended:true}));
   app.use(bodyParser.urlencoded({extended:true}));
   app.use(bodyParser.json());
-
-  app.use(session({
-    secret: 'sunvoinwza007',
-    resave: false,
-    saveUninitialized: true,
-    cookie:{
-        expires:new Date(Date.now() + 24 * 60 * 60 * 1000),
-        },
-    })
-  )
-
-  
 
 
   

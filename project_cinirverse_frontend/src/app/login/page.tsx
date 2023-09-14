@@ -1,7 +1,6 @@
 "use client"
-import React, { use, useEffect, useState } from 'react';
-import Footer from '../Footer';
-import Navbar from '../Header_Navbar';
+import React, { useState } from 'react';
+
 import { useRouter } from 'next/navigation'
 import axios from '../Confix_Axios'
 import {useAuth} from '../context/AuthContext'
@@ -32,18 +31,18 @@ export default function page() {
     console.log(body)
     axios.post('/users/login',body).
     then((response:any) => {
-      if(response.data.message){
-      console.log("Login success:", response.data.loggedIn);
-      setLoginStatus(response.data.loggedIn);
+      if(response.data.token){
+      console.log("Login success:", true);
+      setLoginStatus(true);
       setLoggedIn(true)
       setTimeout(() => {
         router.push('/')
       }, 1000)
     }}).
     catch( (error : any) => {
-      console.log("Login failed:", error.response.data.loggedIn);
+      console.log("Login failed:", error);
       setLoginError(true)
-      setLoginStatus(error.response.data.loggedIn);
+      setLoginStatus(false);
     }
       )
     }

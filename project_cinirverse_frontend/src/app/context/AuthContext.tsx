@@ -1,7 +1,5 @@
 'use client'
-import axios from "axios";
 import { useState, useEffect, useContext, createContext, ReactNode } from "react";
-import Navbar from "../Header_Navbar";
 
 const AuthContext = createContext<{ loggedIn: true | false ; setLoggedIn: (value: boolean) => void } | undefined>(undefined);
 
