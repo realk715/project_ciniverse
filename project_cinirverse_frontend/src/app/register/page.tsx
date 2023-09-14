@@ -1,7 +1,5 @@
-"use client"
+'use client'
 import React, { useState,useEffect,FormEvent, } from 'react'
-import Navbar from '../Header_Navbar'
-import Footer from '../Footer'
 import axios from '../Confix_Axios'
 import { useRouter } from 'next/navigation'
 export default function page() {
@@ -10,13 +8,13 @@ export default function page() {
 
   //useState 
   const [inputField,setInputField] = useState({
-    userName : "",
-    fullName : "",
-    email : "",
-    password : "",
-    confirmPassword : ""
+    userName : '',
+    fullName : '',
+    email : '',
+    password : '',
+    confirmPassword : ''
   })
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<any>({});
   const [isTouchUsername,setIsTouchUsername] = useState(true);
   const [isTouchFullname,setIsTouchFullname,] = useState(true);
   const [isTouchEmail,setIsTouchEmail,] = useState(true);
@@ -35,7 +33,7 @@ export default function page() {
 
   useEffect(() => {
     // สร้างตัวแปรเก็บข้อผิดพลาด
-    const errors = {};
+    const errors:any = {};
   
     // ตรวจสอบความถูกต้องของชื่อผู้ใช้
     if (isTouchUsername === true && inputField.userName.length < 5) {
