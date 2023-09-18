@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import Movie from "../../movie";
+import Movie from "../../../movieToday/movie";
 import { useRouter } from "next/navigation";
 
 type Props = {
@@ -12,8 +12,8 @@ export default async function page({ params }: Props) {
   const { page } = params;
   const router = useRouter();
   const img = "https://image.tmdb.org/t/p/original";
-  const url = `https://api.themoviedb.org/3/movie/popular?api_key=72eef7bc29be08e73392ec8cc0b64c52&page=${page}`;
-  const response = await fetch(url, { next: { revalidate: 120 } }); //ครบ60วิ clear cache
+  const url = `https://api.themoviedb.org/3/search/movie?query=&api_key=72eef7bc29be08e73392ec8cc0b64c52&page=${page}`;
+  const response = await fetch(url, { next: { revalidate: 120 } });
   const data = await response.json();
   if (page < 1 || page > 500) {
     router.push("/movieToday/page/1");
@@ -29,7 +29,7 @@ export default async function page({ params }: Props) {
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
+                strokeWidth="1.5"
                 stroke="white"
                 className="w-12 h-12"
               >

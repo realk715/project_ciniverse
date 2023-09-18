@@ -48,6 +48,7 @@ const loginUser = async (req:any, res:any ,next:any) => {
             { expiresIn: '24h' } 
           );
           console.log(newToken);
+          console.log("login success");
           res.cookie('authorization',newToken,{
             httpOnly:true,
             expires:new Date(Date.now() + 24 * 60 * 60 * 1000),

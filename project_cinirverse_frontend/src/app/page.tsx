@@ -2,9 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from './context/AuthContext';
-import axios from './Confix_Axios';
-import Cookies from 'js-cookie';
-
 import Movie from './movie'
 
 const Page = () => {

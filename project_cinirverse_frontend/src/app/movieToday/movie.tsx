@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import Navbar from '../Header_Navbar'
+
 
 type Props = {
     key:string;
@@ -13,8 +13,6 @@ type Props = {
 
 export default function movie({id,title,poster_path,page}: Props) {
     const img ="https://image.tmdb.org/t/p/original";
-
-
   return (
     <div className='bg-black border-solid border-2'>
         <h2 className='text-white text-center text-xl'> {title}</h2>

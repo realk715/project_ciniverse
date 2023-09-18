@@ -32,7 +32,7 @@ const Navbar = () => {
 
 
   return (
-    <header className='flex justify-between bg-black sticky top-0  '>
+    <header className='flex justify-between bg-black sticky top-0  z-50	'>
       <div>
       <button className='show' onClick={toggleSidebar}>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="white" className='w-8 h-8 hover:stroke-red-600 mt-2.5' >
@@ -60,7 +60,7 @@ const Navbar = () => {
           <a href="/register" className='hover:bg-red-600 text-white block py-2.5 px-4'>Register</a>
           {loggedIn?  null: <a href="/login" className='hover:bg-red-600 text-white block py-2.5 px-4'>Login</a>}
           <a href="/movieToday" className='hover:bg-red-600 text-white block py-2.5 px-4'>Movie Today</a>
-          <a href="#" className='hover:bg-red-600 text-white block py-2.5 px-4 w-auto h-auto'>Search Movie</a>
+          <a href="/searchMovie" className='hover:bg-red-600 text-white block py-2.5 px-4 w-auto h-auto'>Search Movie</a>
           {loggedIn? <span className='hover:bg-red-600 text-white block py-2.5 px-4 w-auto h-auto'><button onClick={logout}>logout</button></span>:null}
 
           <div className='  text-white block py-2.5 px-4 '>
