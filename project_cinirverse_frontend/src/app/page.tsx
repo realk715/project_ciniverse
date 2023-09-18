@@ -26,7 +26,8 @@ const Page = () => {
   }, []);
 
   return (
-    <div className='grid gap-2 grid-cols-fluid bg-red-800'>
+    <div className='bg-red-800 h-fit'>
+    <div className='grid gap-2 grid-cols-fluid h-fit p-10'>
      {data.results.map( (movie:any) => 
      <Movie 
      key={movie.id}
@@ -34,6 +35,8 @@ const Page = () => {
      title={movie.title}
      poster_path={movie.poster_path}
      />)}
+    </div>
+
     </div>
   );
         }

@@ -31,8 +31,23 @@ const Page = () => {
   return (
     <div className="bg-red-800">
        <div className="flex items-center justify-center bottom-0">
-        <Link href={`/movieToday/page/${Number(page) + 1}`}>
-          <div className="flex border border-4 ">
+
+        
+      </div>
+    <div className="grid gap-2 grid-cols-fluid bg-red-800 p-10">
+      {data.results.map((movie: any) => (
+        <Movie
+          key={movie.id}
+          id={movie.id}
+          title={movie.title}
+          poster_path={movie.poster_path}
+          page={page}
+        />
+      ))}
+    </div>
+    <div className="flex justify-center pb-10">
+    <Link href={`/movieToday/page/${Number(page) + 1}`}>
+          <span className="flex border border-4 w-fit  ">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -48,20 +63,8 @@ const Page = () => {
             />
           </svg>
           <span className="text-white text-4xl">NEXT</span>
-          </div>
+          </span>
         </Link>
-        
-      </div>
-    <div className="grid gap-2 grid-cols-fluid bg-red-800">
-      {data.results.map((movie: any) => (
-        <Movie
-          key={movie.id}
-          id={movie.id}
-          title={movie.title}
-          poster_path={movie.poster_path}
-          page={page}
-        />
-      ))}
     </div>
     </div>
   );

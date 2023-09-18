@@ -21,6 +21,18 @@ export default async function page({ params }: Props) {
 
   return (
     <div className="bg-red-800">
+      <div className="grid gap-2 grid-cols-fluid bg-red-800 p-10">
+        {data.results.map((movie: any) => (
+          <Movie
+            key={movie.id}
+            id={movie.id}
+            title={movie.title}
+            poster_path={movie.poster_path}
+            page={page}
+          />
+        ))}
+      </div>
+      <div className="flex justify-center pb-10">
       {page < 2 ? (
         <div className="flex justify-center ">
           <Link href={`/movieToday/page/${Number(page) + 1}`}>
@@ -85,16 +97,6 @@ export default async function page({ params }: Props) {
           </Link>
         </div>
       )}
-      <div className="grid gap-2 grid-cols-fluid bg-red-800">
-        {data.results.map((movie: any) => (
-          <Movie
-            key={movie.id}
-            id={movie.id}
-            title={movie.title}
-            poster_path={movie.poster_path}
-            page={page}
-          />
-        ))}
       </div>
     </div>
   );

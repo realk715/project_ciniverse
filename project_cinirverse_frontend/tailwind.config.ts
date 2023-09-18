@@ -8,7 +8,7 @@ const config: Config = {
   theme: {
     extend: {
       gridTemplateColumns:{
-        fluid:"repeat(auto-fit,minmax(16rem,2fr))",
+        fluid:"repeat(auto-fit,minmax(11rem,2fr))",
       },
       fontFamily: {
         Kanit: ["Kanit", "sans-serif"],
