@@ -1,13 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import Movie from "../movieToday/movie";
-import Link from "next/link";
 
-type Props = {
-    inputField:[]
-};
-
-const Page = (props: Props) => {
+const Page = () => {
   const [inputField, setInputField] = useState({
     search: "",
   });
