@@ -94,7 +94,7 @@ const Page = () => {
   };
 
   return (
-    <div className="bg-red-800 h-[100rem] ">
+    <div className="bg-red-800 min-h-screen ">
       <div className="p-4 w-6/12 ">
         <div className="relative ">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
