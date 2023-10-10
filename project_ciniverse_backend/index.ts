@@ -10,6 +10,7 @@
   import userRoutes from './routes/user'
   import bodyParser from 'body-parser';
   import cookieParser from 'cookie-parser'
+  import movieRoutes from './routes/movie'
 
   const app = express();
   
@@ -35,6 +36,8 @@
 
   
   app.use('/users', userRoutes);
+  app.use('/movies',movieRoutes);
+
 
   app.listen(Number(process.env.PORT), () => {
       console.log(`Server is running at port ${process.env.PORT}`)

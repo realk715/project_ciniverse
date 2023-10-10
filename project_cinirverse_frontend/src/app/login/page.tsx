@@ -14,7 +14,7 @@ export default function page() {
   });
   const [loginError,setLoginError] = useState(false)
   const [loginStatus, setLoginStatus] = useState(false);
-  const { loggedIn, setLoggedIn } = useAuth();
+  const { token, setToken } = useAuth();
 
   const handleChange = (e:any) => {setValues({
       ...values,[e.target.name]: e.target.value,
@@ -28,30 +28,34 @@ export default function page() {
       username : values.username,
       password : values.password
     }
-    axios.post('/users/login',body).
+    const axLogin:any = axios.post('/users/login',body).
     then((response:any) => {
       if(response.data.token){
       console.log("Login success:", true);
-      setLoginStatus(true);
-      setLoggedIn(true)
       setTimeout(() => {
         router.push('/')
       }, 1000)
+      return response.data
     }}).
     catch( (error : any) => {
       console.log("Login failed:", error);
       setLoginError(true)
       setLoginStatus(false);
     }
-      )
-    }
+    )
+    setLoginStatus(true);
+    setToken(axLogin.token)
+    console.log(token)
 
-
+  }
+  
+  
+  
 
 
   return (
     <>
-   {!loggedIn? ( <div className="login bg-cover bg-repeat text-black ">
+   {!token? ( <div className="login bg-cover bg-repeat text-black ">
       <div className="h-screen flex flex-col justify-center items-center">
           <form className="" method="POST" onSubmit={logIn} >
             <h1 className="text-white font-bold text-8xl mb-1">Hello Again!</h1>

@@ -1,13 +1,13 @@
 'use client'
 import { useState, useEffect, useContext, createContext, ReactNode } from "react";
 
-const AuthContext = createContext<{ loggedIn: true | false ; setLoggedIn: (value: boolean) => void } | undefined>(undefined);
+const AuthContext = createContext<{ token: string  ; setToken: (value: string) => void } | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [token, setToken] = useState('');
 
   return (
-    <AuthContext.Provider value={{ loggedIn, setLoggedIn }}>
+    <AuthContext.Provider value={{token,setToken}}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,4 +1,3 @@
-import { Request, Response } from 'express';
 import User from '../model/user'; 
 import bcrypt from 'bcrypt'
 import jwt, { decode } from 'jsonwebtoken';
@@ -53,7 +52,8 @@ const loginUser = async (req:any, res:any ,next:any) => {
             httpOnly:true,
             expires:new Date(Date.now() + 24 * 60 * 60 * 1000),
             sameSite:'Strict'
-          })          
+          })
+          res.header('authorization',`Bearrer ${newToken}`)          
           return res.status(200).json({
             token: newToken,
             message: "Login successful.",

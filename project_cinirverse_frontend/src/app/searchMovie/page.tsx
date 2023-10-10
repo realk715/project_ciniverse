@@ -135,7 +135,7 @@ const Page = () => {
             key={movie.id}
             id={movie.id}
             title={movie.title}
-            poster_path={movie.poster_path}
+            poster_path={movie. poster_path}
             page={page}
           />
         ))}
